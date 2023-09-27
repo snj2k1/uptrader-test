@@ -1,0 +1,25 @@
+.task{
+  border: 1px solid rgb(10, 161, 226);
+  padding: 0 15px;
+  width: 80%;
+  border-radius: 10px;
+  transition: all .4s ease-out;
+}
+.list{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  list-style-type: none;
+  padding: 0;
+  margin: 15px 0;
+}
+.list h3,
+.list p{
+  margin: 0;
+  padding: 0;
+}
+.task:hover{
+  background-color: rgb(10, 161, 226);
+  color: white;
+  transition: all .4s ease-in;
+}

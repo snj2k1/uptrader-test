@@ -1,4 +1,10 @@
-import { ADD_PROJECT, REMOVE_PROJECT, ADD_TASK } from "./projects-actions";
+import {
+  ADD_PROJECT,
+  REMOVE_PROJECT,
+  ADD_TASK,
+  UPDATE_TASK_STATUS,
+  CHANGE_TASK,
+} from "./projects-actions";
 
 export const projectsReducer = (state = {}, action) => {
   switch (action.type) {
@@ -28,6 +34,40 @@ export const projectsReducer = (state = {}, action) => {
         },
       };
       return newState;
+    }
+    case CHANGE_TASK: {
+      const newState = {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          tasks: [
+            ...state[action.id].tasks.map((el) =>
+              Number(el.id) === Number(action.task.id) ? action.task : el
+            ),
+          ],
+        },
+      };
+      return newState;
+    }
+    case UPDATE_TASK_STATUS: {
+      const { projectId, taskId, sourceStatus, destinationStatus } =
+        action.payload;
+      const updatedState = {
+        ...state,
+        [projectId]: {
+          ...state[projectId],
+          tasks: state[projectId]["tasks"].map((task) => {
+            if (Number(task.id) === Number(taskId)) {
+              return {
+                ...task,
+                status: destinationStatus,
+              };
+            }
+            return { ...task };
+          }),
+        },
+      };
+      return updatedState;
     }
     default:
       return state;

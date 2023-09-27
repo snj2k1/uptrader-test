@@ -15,13 +15,15 @@ const AddNewTask = ({ id }) => {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("Низкий");
   const [deadline, setDeadline] = useState(new Date());
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState([]);
   const [error, setError] = useState(false);
   const { TextArea } = Input;
 
   const handleAdd = (title, description, priority, deadline, files) => {
     const newTask = {
+      projectId: id,
       id: taskId,
+      number: Number(taskId) + 1,
       title,
       description,
       createDate: new Date(),
@@ -46,7 +48,7 @@ const AddNewTask = ({ id }) => {
       setDescription("");
       setPriority("Низкий");
       setDeadline(new Date());
-      setFiles(null);
+      setFiles([]);
       setIsModalOpen(false);
       setError(false);
     } else {
