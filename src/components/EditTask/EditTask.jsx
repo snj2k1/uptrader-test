@@ -1,9 +1,11 @@
-import { Modal, DatePicker, Form, Input, Select, Upload } from "antd";
+import { Modal, DatePicker, Form, Input, Select, Upload, Button } from "antd";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
 import { toggleEdit } from "../../redux/edit/edit-actions";
 import { changeTask } from "../../redux/projects/projects-actions";
+import { SubtaskList } from "../SubtaskList/SubtaskList";
+import { CommentList } from "../CommentList/CommentList";
 
 const EditTask = ({ task }) => {
   const dispatch = useDispatch();
@@ -12,23 +14,50 @@ const EditTask = ({ task }) => {
   const [priority, setPriority] = useState(task.priority);
   const [deadline, setDeadline] = useState(task.deadlineDate);
   const [files, setFiles] = useState(task.attachments);
+  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState(task.comments || []);
   const [error, setError] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [subtasks, setSubtasks] = useState(task.subtasks || []);
   const { TextArea } = Input;
 
   const handleAdd = (title, description, priority, deadline, files) => {
-    // Обновление задачи с новыми данными
-    const updatedTask = {
-      ...task, // Копируем существующую задачу
+    const newTask = {
+      ...task,
       title,
       description,
-      priority,
       deadlineDate: deadline,
+      priority,
+      subtasks: [],
+      comments,
       attachments: files,
-      // Добавьте обновление подзадач и комментариев здесь, если необходимо
     };
+    dispatch(changeTask(task.projectId, newTask));
+  };
 
-    dispatch(changeTask(task.projectId, updatedTask)); // Отправляем обновленную задачу в Redux
+  const handleAddChildComment = (parentComment, text) => {
+    if (text.trim()) {
+      if (!parentComment.children) {
+        parentComment.children = [];
+      }
+      const newChildComment = {
+        text,
+      };
+      parentComment.children.push(newChildComment);
+      setComments([...comments]); // Обновите локальное состояние
+    }
+  };
+
+  const handleAddComment = () => {
+    if (commentText.trim()) {
+      const newComment = { text: commentText, children: [] };
+      comments.push(newComment); // Обновите локальное состояние
+      setCommentText("");
+    }
+  };
+
+  const handleAddSubtask = (subtask) => {
+    setSubtasks([...subtasks, subtask]);
   };
 
   const handleOk = () => {
@@ -62,8 +91,8 @@ const EditTask = ({ task }) => {
 
   return (
     <Modal
-      title="Редактировать задачу"
-      visible={isModalOpen}
+      title="Добавить новую задачу"
+      open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
     >
@@ -110,6 +139,27 @@ const EditTask = ({ task }) => {
             </div>
           </Upload>
         </Form.Item>
+        <Form.Item label="Подзадачи">
+          <SubtaskList subtasks={subtasks} onAddSubtask={handleAddSubtask} />
+        </Form.Item>
+        <Form.Item label="Комментарий">
+          <TextArea
+            rows={4}
+            placeholder="Добавить комментарий"
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+          />
+          <Button type="primary" onClick={handleAddComment}>
+            Добавить комментарий
+          </Button>
+        </Form.Item>
+        <div>
+          <h3>Комментарии:</h3>
+          <CommentList
+            comments={comments}
+            handleAddChildComment={handleAddChildComment}
+          />
+        </div>
       </Form>
     </Modal>
   );
