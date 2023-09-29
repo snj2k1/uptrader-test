@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/uptrader-test/static/css/main.48880f4a.css",
+    "main.js": "/uptrader-test/static/js/main.031cdb6d.js",
+    "index.html": "/uptrader-test/index.html",
+    "main.48880f4a.css.map": "/uptrader-test/static/css/main.48880f4a.css.map",
+    "main.031cdb6d.js.map": "/uptrader-test/static/js/main.031cdb6d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.48880f4a.css",
+    "static/js/main.031cdb6d.js"
+  ]
+}
