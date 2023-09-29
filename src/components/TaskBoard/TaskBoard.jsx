@@ -8,8 +8,8 @@ import { EditTask } from "../EditTask/EditTask";
 import { useSelector } from "react-redux";
 import { selectEdit } from "../../redux/edit/edit-selectors";
 import { toggleEdit } from "../../redux/edit/edit-actions";
-/*import moment from "moment";
-import "moment-duration-format";*/
+import moment from "moment";
+import "moment-duration-format";
 
 const TaskBoard = ({ tasks }) => {
   const [taskList, setTaskList] = useState(tasks);
@@ -26,7 +26,7 @@ const TaskBoard = ({ tasks }) => {
     dispatch(toggleEdit());
   };
 
-  /*const timeInWork = (date) => {
+  const timeInWork = (date) => {
     const temp = moment.duration(moment().diff(moment(date)));
     const days = temp.days();
     const hours = temp.hours();
@@ -47,7 +47,7 @@ const TaskBoard = ({ tasks }) => {
     }
 
     return result;
-  };*/
+  };
 
   const getColumnTasks = (status) =>
     taskList.filter((task) => task.status === status);
@@ -163,7 +163,7 @@ const TaskBoard = ({ tasks }) => {
                                 <li>
                                   <span>
                                     Время в работе:{" "}
-                                    {/*timeInWork(task.createDate)*/}
+                                    {timeInWork(task.createDate)}
                                   </span>
                                 </li>
                                 {task.subtasks.length > 0 && (
