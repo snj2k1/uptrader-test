@@ -7,13 +7,9 @@ import {
 
 const initialState = loadDataFromLocalStorage() || {};
 
-const store = createStore(
-  rootReducer,
-  {
-    projects: initialState,
-  },
-  window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const store = createStore(rootReducer, {
+  projects: initialState,
+});
 
 store.subscribe(() => {
   const currentState = store.getState();
