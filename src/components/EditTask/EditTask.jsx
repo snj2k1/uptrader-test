@@ -6,7 +6,7 @@ import { toggleEdit } from "../../redux/edit/edit-actions";
 import { changeTask } from "../../redux/projects/projects-actions";
 import { SubtaskList } from "../SubtaskList/SubtaskList";
 import { CommentList } from "../CommentList/CommentList";
-import moment from "moment";
+//import moment from "moment";
 import styles from "./EditTask.module.css";
 
 const EditTask = ({ task }) => {
@@ -127,7 +127,7 @@ const EditTask = ({ task }) => {
         </Form.Item>
         <Form.Item label="Дедлайн">
           <DatePicker
-            placeholder={moment(deadline).format("YYYY-MM-DD")}
+            placeholder={/*moment(deadline).format("YYYY-MM-DD")*/ ""}
             onChange={(e) => setDeadline(new Date(e))}
           />
         </Form.Item>
