@@ -6,6 +6,8 @@ import { toggleEdit } from "../../redux/edit/edit-actions";
 import { changeTask } from "../../redux/projects/projects-actions";
 import { SubtaskList } from "../SubtaskList/SubtaskList";
 import { CommentList } from "../CommentList/CommentList";
+import moment from "moment";
+import styles from "./EditTask.module.css";
 
 const EditTask = ({ task }) => {
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ const EditTask = ({ task }) => {
       description,
       deadlineDate: deadline,
       priority,
-      subtasks: [],
+      subtasks,
       comments,
       attachments: files,
     };
@@ -44,20 +46,24 @@ const EditTask = ({ task }) => {
         text,
       };
       parentComment.children.push(newChildComment);
-      setComments([...comments]); // Обновите локальное состояние
+      setComments([...comments]);
     }
   };
 
   const handleAddComment = () => {
     if (commentText.trim()) {
       const newComment = { text: commentText, children: [] };
-      comments.push(newComment); // Обновите локальное состояние
+      comments.push(newComment);
       setCommentText("");
     }
   };
 
   const handleAddSubtask = (subtask) => {
     setSubtasks([...subtasks, subtask]);
+  };
+
+  const handleUpdateSubtask = (updatedSubtasks) => {
+    setSubtasks(updatedSubtasks);
   };
 
   const handleOk = () => {
@@ -120,7 +126,10 @@ const EditTask = ({ task }) => {
           </Select>
         </Form.Item>
         <Form.Item label="Дедлайн">
-          <DatePicker onChange={(e) => setDeadline(new Date(e))} />
+          <DatePicker
+            placeholder={moment(deadline).format("YYYY-MM-DD")}
+            onChange={(e) => setDeadline(new Date(e))}
+          />
         </Form.Item>
         <Form.Item
           label="Файлы"
@@ -131,7 +140,7 @@ const EditTask = ({ task }) => {
             action="/upload.do"
             listType="picture-card"
             onChange={(e) => setFiles(e.fileList)}
-            value={files}
+            fileList={files}
           >
             <div>
               <PlusOutlined />
@@ -140,7 +149,11 @@ const EditTask = ({ task }) => {
           </Upload>
         </Form.Item>
         <Form.Item label="Подзадачи">
-          <SubtaskList subtasks={subtasks} onAddSubtask={handleAddSubtask} />
+          <SubtaskList
+            subtasks={subtasks}
+            onAddSubtask={handleAddSubtask}
+            onUpdateSubtask={handleUpdateSubtask}
+          />
         </Form.Item>
         <Form.Item label="Комментарий">
           <TextArea
@@ -148,8 +161,13 @@ const EditTask = ({ task }) => {
             placeholder="Добавить комментарий"
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
+            style={{ border: "1px solid #1677ff" }}
           />
-          <Button type="primary" onClick={handleAddComment}>
+          <Button
+            type="primary"
+            onClick={handleAddComment}
+            style={{ marginTop: "10px" }}
+          >
             Добавить комментарий
           </Button>
         </Form.Item>

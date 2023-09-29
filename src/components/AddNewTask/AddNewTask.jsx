@@ -6,6 +6,7 @@ import styles from "./AddNewTask.module.css";
 import { addTask } from "../../redux/projects/projects-actions";
 import { selectTaskId } from "../../redux/projects/projects-selectors";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 const AddNewTask = ({ id }) => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const AddNewTask = ({ id }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("Низкий");
-  const [deadline, setDeadline] = useState(new Date());
+  const [deadline, setDeadline] = useState(null);
   const [files, setFiles] = useState([]);
   const [error, setError] = useState(false);
   const { TextArea } = Input;
@@ -47,7 +48,7 @@ const AddNewTask = ({ id }) => {
       setTitle("");
       setDescription("");
       setPriority("Низкий");
-      setDeadline(new Date());
+      setDeadline(null);
       setFiles([]);
       setIsModalOpen(false);
       setError(false);
@@ -108,7 +109,10 @@ const AddNewTask = ({ id }) => {
             </Select>
           </Form.Item>
           <Form.Item label="Дедлайн">
-            <DatePicker onChange={(e) => setDeadline(new Date(e))} />
+            <DatePicker
+              placeholder={moment(new Date()).format("YYYY-MM-DD")}
+              onChange={(e) => setDeadline(new Date(e))}
+            />
           </Form.Item>
           <Form.Item
             label="Файлы"
@@ -119,7 +123,7 @@ const AddNewTask = ({ id }) => {
               action="/upload.do"
               listType="picture-card"
               onChange={(e) => setFiles(e.fileList)}
-              value={files}
+              fileList={files}
             >
               <div>
                 <PlusOutlined />

@@ -3,10 +3,17 @@
   transition: all .4s ease-out;
   font-weight: 700;
   height: 100%;
+  width: 25%;
 }
 .button:hover{
   background-color: white !important;
   color: rgb(10, 161, 226) !important;
   border-color: rgb(10, 161, 226) !important;
   transition: all .4s ease-in;
+}
+
+@media screen and (max-width: 768px) {
+  .button{
+    width: 100%;
+  }
 }

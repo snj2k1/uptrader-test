@@ -1,0 +1,20 @@
+.search input:hover,
+.search span:hover,
+.search button:hover{
+  border: none;
+}
+.search input,
+.search span,
+.search button{
+  border: none;
+}
+
+.search{
+  width: 25%;
+}
+
+@media screen and (max-width: 768px){
+  .search{
+    width: 100%;
+  }
+}

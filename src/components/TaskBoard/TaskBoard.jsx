@@ -3,11 +3,13 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import styles from "./TaskBoard.module.css";
 import { useDispatch } from "react-redux";
 import { updateTaskStatus } from "../../redux/projects/projects-actions";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DashboardOutlined } from "@ant-design/icons";
 import { EditTask } from "../EditTask/EditTask";
 import { useSelector } from "react-redux";
 import { selectEdit } from "../../redux/edit/edit-selectors";
 import { toggleEdit } from "../../redux/edit/edit-actions";
+import moment from "moment";
+import "moment-duration-format";
 
 const TaskBoard = ({ tasks }) => {
   const [taskList, setTaskList] = useState(tasks);
@@ -22,6 +24,29 @@ const TaskBoard = ({ tasks }) => {
   const handleEdit = (task) => {
     setEdit(task);
     dispatch(toggleEdit());
+  };
+
+  const timeInWork = (date) => {
+    const temp = moment.duration(moment().diff(moment(date)));
+    const days = temp.days();
+    const hours = temp.hours();
+    const minutes = temp.minutes();
+
+    let result = "";
+
+    if (days > 0) {
+      result += `${days} дней `;
+    }
+
+    if (hours > 0) {
+      result += `${hours} часов `;
+    }
+
+    if (minutes > 0) {
+      result += `${minutes} минут`;
+    }
+
+    return result;
   };
 
   const getColumnTasks = (status) =>
@@ -50,7 +75,10 @@ const TaskBoard = ({ tasks }) => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div style={{ display: "flex" }}>
+      <div
+        className={styles.container}
+        style={{ display: "flex", maxWidth: "100%" }}
+      >
         {["Queue", "Development", "Done"].map((status) => (
           <Droppable key={status} droppableId={status} direction="vertical">
             {(provided) => (
@@ -62,6 +90,7 @@ const TaskBoard = ({ tasks }) => {
                   display: "flex",
                   flexDirection: "column",
                   gap: "15px",
+                  minWidth: "350px",
                 }}
               >
                 <h2>{status}</h2>
@@ -131,8 +160,26 @@ const TaskBoard = ({ tasks }) => {
                                 <li>
                                   <span>Приоритет: {task.priority}</span>
                                 </li>
+                                <li>
+                                  <span>
+                                    Время в работе:{" "}
+                                    {timeInWork(task.createDate)}
+                                  </span>
+                                </li>
+                                {task.subtasks.length > 0 && (
+                                  <li>
+                                    <DashboardOutlined />
+                                    &nbsp;
+                                    {task.subtasks.reduce(
+                                      (acc, prev) =>
+                                        prev.completed ? acc + 1 : acc,
+                                      0
+                                    ) +
+                                      "/" +
+                                      task.subtasks.length}
+                                  </li>
+                                )}
                               </ul>
-                              {/* Добавьте другие свойства задачи */}
                             </div>
                           </div>
                         )}

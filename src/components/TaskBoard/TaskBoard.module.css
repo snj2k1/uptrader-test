@@ -15,6 +15,7 @@
 }
 .list h3,
 .list p{
+  overflow-wrap: break-word;
   margin: 0;
   padding: 0;
 }
@@ -22,4 +23,13 @@
   background-color: rgb(10, 161, 226);
   color: white;
   transition: all .4s ease-in;
+}
+.container{
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none
+}
+.container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }

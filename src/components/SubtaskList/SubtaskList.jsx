@@ -1,7 +1,8 @@
-import { Modal, DatePicker, Form, Input, Select, Upload, Button } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
+import { Button, Input, Checkbox } from "antd";
+import styles from "./SubtaskList.module.css";
 
-const SubtaskList = ({ subtasks, onAddSubtask }) => {
+const SubtaskList = ({ subtasks, onAddSubtask, onUpdateSubtask }) => {
   const [subtaskTitle, setSubtaskTitle] = useState("");
 
   const handleAddSubtask = () => {
@@ -11,21 +12,39 @@ const SubtaskList = ({ subtasks, onAddSubtask }) => {
     }
   };
 
+  const handleToggleSubtask = (subtaskIndex) => {
+    const updatedSubtasks = [...subtasks];
+    updatedSubtasks[subtaskIndex].completed =
+      !updatedSubtasks[subtaskIndex].completed;
+    onUpdateSubtask(updatedSubtasks);
+  };
+
   return (
     <div>
-      <ul>
+      <ul className={styles.list}>
         {subtasks.map((subtask, index) => (
           <li key={index}>
-            {subtask.title} - {subtask.completed ? "Завершено" : "Не завершено"}
+            <Checkbox
+              checked={subtask.completed}
+              onChange={() => handleToggleSubtask(index)}
+            />
+            {subtask.title +
+              " | " +
+              (subtask.completed ? "Выполнена" : "Не выполнена")}
           </li>
         ))}
       </ul>
       <Input
-        placeholder="Добавить подзадачу"
+        placeholder="Введите название подзадачи..."
         value={subtaskTitle}
+        className={styles.subtask}
         onChange={(e) => setSubtaskTitle(e.target.value)}
       />
-      <Button type="primary" onClick={handleAddSubtask}>
+      <Button
+        type="primary"
+        onClick={handleAddSubtask}
+        style={{ marginTop: "10px" }}
+      >
         Добавить подзадачу
       </Button>
     </div>

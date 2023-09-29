@@ -1,0 +1,19 @@
+.list{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 10px;
+}
+.list > li > label > span > span{
+  border-color: #1677ff !important;
+}
+.list > li > label{
+  margin-right: 5px;
+}
+.subtask{
+  margin-top: 10px;
+  border: 1px solid #1677ff;
+}

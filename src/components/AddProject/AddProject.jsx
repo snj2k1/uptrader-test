@@ -64,7 +64,7 @@ const AddProject = (props) => {
         )}
         <Input
           onChange={(e) => setProjectName(e.target.value)}
-          placeholder="New Project"
+          placeholder="Введите название проекта..."
           value={projectName}
           style={error && { borderColor: "red" }}
         />

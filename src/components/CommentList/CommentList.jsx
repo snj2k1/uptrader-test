@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Input } from "antd";
+import styles from "./CommentList.module.css";
 
 const CommentList = ({ comments, handleAddChildComment }) => {
   const [childCommentText, setChildCommentText] = useState({});
@@ -31,7 +32,7 @@ const CommentList = ({ comments, handleAddChildComment }) => {
   };
 
   return (
-    <ul>
+    <ul className={styles.list}>
       {comments.map((comment, index) => (
         <li key={index}>
           {comment.text}
@@ -39,13 +40,14 @@ const CommentList = ({ comments, handleAddChildComment }) => {
             <Button
               type="link"
               onClick={() => handleShowChildCommentForm(index)}
+              style={{ display: "block" }}
             >
-              Добавить дочерний комментарий
+              Ответить
             </Button>
           ) : (
             <div>
               <Input
-                placeholder="Введите текст дочернего комментария"
+                placeholder="Введите сообщение"
                 value={childCommentText[index]}
                 onChange={(e) =>
                   setChildCommentText((childCommentText) => ({
@@ -57,6 +59,7 @@ const CommentList = ({ comments, handleAddChildComment }) => {
               <Button
                 type="primary"
                 onClick={() => handleAddChildCommentClick(comment, index)}
+                style={{ marginTop: "5px" }}
               >
                 Добавить
               </Button>
